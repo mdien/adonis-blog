@@ -1,0 +1,26 @@
+@layout('main')
+
+@section('extracss')
+{{style('style/register')}}
+@endsection
+@section('content')
+
+<div class="text-center">
+    <form class="form-signin" action="/signup" method="POST">
+        {{csrfField()}}
+        <h1 class="h3 mb-3 font-weight-normal">Please Sign Up</h1>
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" name="username" value="{{ old('username', '') }}" class="form-control" placeholder="Username" required autofocus>
+        {{elIf('<span class="text-danger">$self</span>', getErrorFor('username'), hasErrorFor('username')) }}
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" name="email" value="{{old('username', '')}}" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        {{elIf('<span class="text-danger">$self</span>', getErrorFor('email'), hasErrorFor('email'))}}
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        {{elIf('<span class="text-danger">$self</span>', getErrorFor('email'), hasErrorFor('email'))}}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+        <p class="mt-5 mb-3 text-muted">&copy; Study Hard</p>
+    </form>
+</div>
+
+@endsection

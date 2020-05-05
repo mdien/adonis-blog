@@ -3,9 +3,6 @@
 //Bring in model
 const Post = use('App/Models/Post')
 
-//Bring in validator
-const {validate} = use('Validator') 
-
 class PostController {
     async index({view}){
 
@@ -30,21 +27,7 @@ class PostController {
     }
 
     async store({ request, response, session }){
-        const post = new Post();
-
-        //Validate input
-        const validation = await validate(request.all(), {
-            title: 'required|min:3|max:255',
-            body: 'required|min:3'
-        })
-
-        if(validation.fails()){
-            session.withErrors(validation.messages()).flashAll()
-            return response.redirect('back')
-        }
-
-        post.title = request.input('title')
-        post.body = request.input('body')
+        const post = await Post.create(request.only(['title','body']))
 
         await post.save()
 
@@ -62,21 +45,10 @@ class PostController {
     }
 
     async update({ request, response, session, params }){
-        //Validate input
-        const validation = await validate(request.all(), {
-            title: 'required|min:3|max:255',
-            body: 'required|min:3'
-        })
-
-        if(validation.fails()){
-            session.withErrors(validation.messages()).flashAll()
-            return response.redirect('back')
-        }
-
         const post = await Post.find(params.id)
 
-        post.title = request.input('title')
-        post.body = request.input('body')
+        post.title = request.all().title
+        post.body = request.all().body
 
         await post.save()
 
